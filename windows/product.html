@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <title>Data Produk</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <div style="display: inline-block; color: aliceblue;">
+                <span id="store-name" class="ms-2" style="font-size: 14.5px;">
+                    My Store
+                </span>
+            </div>
+            <div style="display: inline-block;">
+                <div class="dropdown" style="display: inline;">
+                    <a href="#" class="btn btn-primary" id="userInfoDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="userFirstName">User</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-light" style="width: 200px;"
+                        aria-labelledby="userInfoDropdown">
+                        <div class="dropdown-body">
+                            <div class="container-fluid">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-size: 14px;">Acces Level</th>
+                                            <th style="font-size: 14px;">Position</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="userAccesLevel"></td>
+                                            <td id="userPosition"></td>
+                                        </tr>
+                                </table>
+                                <button class="btn btn-danger" id="logoutBtn"><i
+                                        class="fa-solid fa-sign-out"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>
