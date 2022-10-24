@@ -31,23 +31,20 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-light" style="width: 200px;"
                         aria-labelledby="userInfoDropdown">
                         <div class="dropdown-body">
-                            <div class="container-fluid">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th style="font-size: 14px;">Acces Level</th>
-                                            <th style="font-size: 14px;">Position</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td id="userAccesLevel"></td>
-                                            <td id="userPosition"></td>
-                                        </tr>
-                                </table>
-                                <button class="btn btn-danger" id="logoutBtn"><i
-                                        class="fa-solid fa-sign-out"></i></button>
-                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 14px;">Acces Level</th>
+                                        <th style="font-size: 14px;">Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="userAccesLevel"></td>
+                                        <td id="userPosition"></td>
+                                    </tr>
+                            </table>
+                            <button class="btn btn-danger" id="logoutBtn"><i class="fa-solid fa-sign-out"></i></button>
                         </div>
                     </div>
                 </div>
@@ -135,8 +132,16 @@
             </div>
         </div>
     </div>
-    <script src="./assets/js/jquery-3.6.1.slim.min.js"></script>
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <!-- normal script imports etc  -->
+    <script src="./assets/js/jquery-3.6.1.min.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+    
     <script>
         const ipc = require('electron').ipcRenderer;
 

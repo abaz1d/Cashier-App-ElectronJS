@@ -31,3 +31,46 @@
     font-size: 13px;
     font-weight: 500;
 }
+
+.dropdown-body {
+    padding: 10px;
+}
+
+.btn-light-bordered {
+    border: 1px solid #D0d3d4;
+}
+
+.btn-light-bordered:hover {
+    border: 1px solid #D0d3d4;
+    background-color: #E5E7E9;
+}
+
+.toolbar {
+    position: relative;
+    top: 0px;
+    background-color: #fff;
+    width: 100%;
+    border-bottom: 2px solid #D0d3d4;
+    z-index: 997;
+}
+
+.toolbar-menu {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#main-table {
+    width: auto;
+    overflow: auto;
+}
+
+#form-add-data {
+    display: none;
+    background-color: #ECF0F1;
+}
+
+#form-add-data.active {
+    display: block;
+}
