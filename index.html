@@ -132,21 +132,16 @@
             </div>
         </div>
     </div>
-    <!-- Insert this line above script imports  -->
+    
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
-    <!-- normal script imports etc  -->
     <script src="./assets/js/jquery-3.6.1.min.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Insert this line after script imports -->
     <script>if (window.module) module = window.module;</script>
-    
+
     <script>
         const ipc = require('electron').ipcRenderer;
-
-        // Function that will be called on click
-        // event of "Go to settings window" button
         function productWindow() {
             ipc.send('load:product-window');
         }

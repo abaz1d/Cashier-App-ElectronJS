@@ -1,5 +1,8 @@
-const { app, BrowserWindow, ipcMain, screen } = require("electron");
+const { app, BrowserWindow, ipcMain, screen, webContents } = require("electron");
 const path = require("path");
+const db = require("./config/database/db_config");
+const remote = require('@electron/remote/main');
+remote.initialize();
 
 let mainWindow;
 let productWindow;
@@ -15,6 +18,12 @@ mainWin = () => {
     },
   });
   mainWindow.loadFile(path.join(__dirname, "index.html"));
+  db.connect(function(err) {
+    if (err){
+      console.log('err', err);
+    };
+    console.log("Connected PostgreSQL!");
+  });
 }
 
 ipcMain.on("load:product-window", (event, arg) => {
@@ -35,6 +44,7 @@ productWin = () => {
       enableRemoteModule: true,
     },
   });
+  remote.enable(productWindow.webContents);
 
   // Child window loads settings.html file
   productWindow.loadFile(path.join(__dirname, "windows/product.html"));

@@ -13,7 +13,7 @@
     <title>Data Produk</title>
 </head>
 
-<body>
+<body id="product-data">
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <div style="display: inline-block; color: aliceblue;">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <input type="text" class="form-control form-control-sm" placeholder="Stok Awal" id="product_intial_stock">
+                    <input type="text" class="form-control form-control-sm" placeholder="Stok Awal" id="product_intial_qty">
                 </div>
                 <div class="col-auto">
                     <select name="" id="product_unit" class="form-select form-select-sm">
@@ -139,10 +139,10 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <input type="text" class="form-control form-control-sm" placeholder="Barode" id="product_barcode">
+                    <input type="text" class="form-control form-control-sm" placeholder="Barcode" id="product_barcode" required>
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-sm btn-primary" id="btn-add-data"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                    <button class="btn btn-sm btn-primary" id="btn-add-data" onclick="insertProduct()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                     <button class="btn btn-sm btn-secondary" id="close-form-add-data" onclick="closeFormAdddata()"><i class="fa-solid fa-times"></i> Tutup</button>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                                     <th>Harga Jual / Satuan</th>
                                     <th>Harga Pokok / Satuan</th>
                                     <th>Saldo Awal</th>
-                                    <th></th>
+                                    <th class="d-flex justify-content-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="data">
@@ -175,17 +175,18 @@
             </div>
         </div>
     </div>
-    <!-- Insert this line above script imports  -->
+
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
-    <!-- normal script imports etc  -->
     <script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Insert this line after script imports -->
-    <script>if (window.module) module = window.module;</script>
+    <script src="../assets/js/require.js"></script>
+    <script src="../assets/js/product.js"></script>
+    <script src="../assets/js/main.js"></script>
     
 
+    <script>if (window.module) module = window.module;</script>
+    
     <script>
         openFormAdddata = () => {
             $('#form-add-data').addClass('active');
@@ -194,6 +195,7 @@
 
         closeFormAdddata = () => {
             $('#form-add-data').removeClass('active');
+            resetForm();
         }
     </script>
 </body>

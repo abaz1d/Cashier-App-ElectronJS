@@ -2,7 +2,7 @@
   "name": "cashier-app",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron ."
   },
@@ -10,5 +10,11 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^21.2.0"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.8",
+    "dotenv": "^16.0.3",
+    "imask": "^6.4.3",
+    "pg": "^8.8.0"
   }
 }
