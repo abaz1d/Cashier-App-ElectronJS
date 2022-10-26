@@ -78,3 +78,12 @@
 .action-btn {
     margin: 3px;
 }
+
+tbody#data:hover{
+   cursor: pointer;
+}
+
+.blocked {
+    background-color: #ECF0F1;
+    
+}

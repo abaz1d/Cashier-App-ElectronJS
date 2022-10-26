@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
-    <title>Data Produk</title>
 </head>
 
 <body id="product-data">
@@ -151,6 +150,7 @@
         <div style="padding: 20px 20px 20px 20px;">
             <div class="row">
                 <div clas="col-xl-12">
+                    <div id="alert"></div>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered" style="font-size: 13px;">
                             <thead class="table-light">
@@ -259,13 +259,13 @@
         selectAll = () => {
             $('input.data-checkbox').prop('checked', true);
             $('tbody#data tr').addClass('blocked');
+           
         }
 
         unSelectAll = () => {
             $('input.data-checkbox').prop('checked', false);
             $('tbody#data tr').removeClass('blocked');
         }
-
     </script>
 </body>
 
