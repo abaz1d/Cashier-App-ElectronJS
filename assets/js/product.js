@@ -47,10 +47,31 @@ let inputPrdQty = IMask(
 }
 );
 
+totalPrdPage = (total_row_displayed) => {
+    let sql = `SELECT COUNT(*) AS total FROM products`;
+    db.query(sql, (err, result) => {
+        if (err) throw err
+        let total_page
+        if(result.rows[0].total % total_row_displayed == 0) {
+            total_page = parseInt(result.rows[0].total / total_row_displayed);
+        }else{
+            total_page = parseInt(result.rows[0].total / total_row_displayed) + 1;
+        }
+        $('#total_page').val(total_page);
+        console.log('result',result.rows[0].total);
+    });
+}
 
-loadProduct = () => {
-    let sql = "SELECT * FROM products";
-    db.query(sql, (err, data) => {
+loadProduct = (page_number, total_row_displayed) => {
+    let row_number;
+    if(page_number < 2){
+        row_number = 0;
+    }else{
+        row_number = (page_number - 1) * total_row_displayed;
+    }
+    total_page(total_row_displayed);
+    let sql = "SELECT * FROM products ORDER BY id ASC LIMIT $1 OFFSET $2";
+    db.query(sql, [total_row_displayed, row_number], (err, data) => {
         if (err) throw err;
         let tr = '';
         if (data.length < 1) {
@@ -217,7 +238,7 @@ editPrdData = (id) => {
                             editForm = `<nav class="navbar navbar-light bg-light fixed-top">
                                             <div class="container-fluid">
                                                 <div style="display: inline-block;">
-                                                    <span id="store-name" class="ms-2" style="font-size: 14.5px; font">
+                                                    <span id="store-name" class="ms-2" style="font-size: 16.5px; font-weight: 500; bold;">
                                                         ${row.id} - ${row.product_name}
                                                     </span>
                                                 </div>
@@ -228,40 +249,48 @@ editPrdData = (id) => {
                                                 </div>
                                             </div>
                                         </nav>
-                                        <div class="mb-3">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Nama Produk" id="editPrdName" value="${row.product_name}" required>
-                                            <input type="hidden" id="prevPrdName" value="${row.product_name}">
-                                            <input type="hidden" id="rowId" value="${row.id}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Barcode" id="editPrdBarcode" value="${row.barcode}" required>
-                                            <input type="hidden" id="prevPrdBarcode" value="${row.barcode}">
-                                        </div>
-                                        <div class="mb-3>
-                                            <select class="form-select form-select-sm" id="editPrdCategory">
-                                                ${selectCategoryOption(categoryOption, row.category)}
-                                            </select>
-                                        </div>
-                                        <div class="mb-3>
-                                            <select class="form-select form-select-sm" id="editPrdUnit">
-                                                ${selectUnitOption(unitOption, row.unit)}
-                                            </select>
-                                        </div>
-                                        <div class="mb-3>
-                                            <input type="text" class="form-control form-control-sm" placeholder="Harga Jual" id="editPrdPrice" value="${row.selling_price}">
-                                        </div>
-                                        <div class="mb-3>
-                                            <input type="text" class="form-control form-control-sm" placeholder="Harga Pokok" id="editPrdCost" value="${row.cost_of_product}">
-                                        </div>
-                                        <div class="mb-3>
-                                            <input type="text" class="form-control form-control-sm" placeholder="Stok Awal" id="editPrdInitQty" value="${row.product_intial_qty}">
-                                        </div>
-                                        <div class="d-grid-gap-2>
-                                            <button class="btn btn-sm btn-primary btn-block" onclick="submitEditPrdData(${id})" id="btn-submit-edit"><i class="fa-solid fa-paper-plane"></i> Simpan</button>
+                                        <div class="row g-3 mt-4">
+                                            <div class="col-12">
+                                                <label for="editPrdName" class="form-label">Nama Produk</label>
+                                                <input type="text" class="form-control" placeholder="Nama Produk" id="editPrdName" value="${row.product_name}" required>
+                                                <input type="hidden" id="prevPrdName" value="${row.product_name}">
+                                                <input type="hidden" id="rowId" value="${row.id}">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdBarcode" class="form-label">Barcode</label>
+                                                <input type="text" class="form-control" placeholder="Barcode" id="editPrdBarcode" value="${row.barcode}" required>
+                                                <input type="hidden" id="prevPrdBarcode" value="${row.barcode}">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdCategory" class="form-label">Category</label>
+                                                <select class="form-select" id="editPrdCategory">
+                                                    ${selectCategoryOption(categoryOption, row.category)}
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdUnit" class="form-label">Unit</label>
+                                                <select class="form-select" id="editPrdUnit">
+                                                    ${selectUnitOption(unitOption, row.unit)}
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdPrice" class="form-label">Harga Jual</label>
+                                                <input type="text" class="form-control" placeholder="Harga Jual" id="editPrdPrice" value="${row.selling_price}" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdCost" class="form-label">Harga Pokok</label>
+                                                <input type="text" class="form-control" placeholder="Harga Pokok" id="editPrdCost" value="${row.product_intial_qty}" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="editPrdInitQty" class="form-label">Stok Awal</label>
+                                                <input type="text" class="form-control" placeholder="Stok Awal" id="editPrdInitQty" value="${row.product_intial_qty}" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-primary" onclick="submitEditPrdData(${id})" id="btn-submit-edit"><i class="fa-solid fa-paper-plane"></i> Simpan</button>
+                                            </div>
+                                        </div>`;
 
-                                        </div>`
-
-                            ipcRenderer.send('load:edit','product-data',editForm,600,900, id)
+                            ipcRenderer.send('load:edit', 'product-data', editForm, 600, 900, id)
                         }
                     });
                 }
