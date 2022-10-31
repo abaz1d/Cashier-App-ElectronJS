@@ -59,9 +59,9 @@
                             <div class="col-auto">
                                 <button class="btn btn-sm btn-light btn-light-bordered" id="add-data" title="Tambah Data" onclick="openFormAdddata()"><i class="fa-solid fa-plus"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="deleteAction()" id='delete-multiple-data' data-bs-toggle="tooltip" title="Hapus Data"><i class="fa-solid fa-trash"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa-solid fa-file-excel"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa-solid fa-file-pdf"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa-solid fa-print"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" title="Export CSV" onclick="exportData('csv')" ><i class="fa-solid fa-file-excel"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" title="Export PDF" onclick="exportData('pdf')" ><i class="fa-solid fa-file-pdf"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" title="Print Table" ><i class="fa-solid fa-print"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="selectAll()" id="select-all" title="Select All"><i class="fa-solid fa-check"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="unSelectAll()" id="unselect-all" title="Unselect All"><i class="fa-solid fa-times"></i></button>
                             </div>
@@ -270,26 +270,33 @@
         //pagination
         $('#first-page').click(function(e) {
             e.preventDefault();
+            let searchVal = $(`#search-data`).val();
             let total_row_displayed = $('#row_per_page').val();
             $('#page_number').val(1);
-            load_data(1, total_row_displayed);
+            load_data(1, total_row_displayed, searchVal);
         });
+
         $('#last-page').click(function(e) {
             e.preventDefault();
             let total_pages = $('#total_pages').val();
             $('#page_number').val(total_pages);
             let total_row_displayed = $('#row_per_page').val();
-            load_data(total_pages, total_row_displayed);
+            let searchVal = $(`#search-data`).val();
+            load_data(total_pages, total_row_displayed, searchVal);
         });
+
         $('#page_number').keyup(function(e) {
             //
             e.preventDefault();
             let page_number = $(this).val();
             let total_row_displayed = $('#row_per_page').val();
-            load_data(page_number, total_row_displayed);
+            let searchVal = $(`#search-data`).val();
+            load_data(page_number, total_row_displayed, searchVal);
         });
+
         $('#next-page').click(function(e) {
             e.preventDefault();
+            let searchVal = $(`#search-data`).val();
             let total_pages = $('#total_pages').val();
             let input_val = $('#page_number').val();
             if(input_val == '') {
@@ -299,11 +306,13 @@
             var total_row_displayed = $('#row_per_page').val();
             if(page_no < total_pages) {
                 $('#page_number').val(page_no + 1);
-                load_data(page_no + 1, total_row_displayed);
+                load_data(page_no + 1, total_row_displayed, searchVal);
             }
         });
+
         $('#prev-page').click(function(e) {
             e.preventDefault();
+            let searchVal = $(`#search-data`).val();
             let input_val = $('#page_number').val();
             if(input_val == '') {
                 input_val = 1;
@@ -312,12 +321,13 @@
             var total_row_displayed = $('#row_per_page').val();
             if(page_no > 1) {
                 $('#page_number').val(page_no - 1);
-                load_data(page_no - 1, total_row_displayed);
+                load_data(page_no - 1, total_row_displayed, searchVal);
             }
         });
         $('#row_per_page').change(function(e) {
             //
             e.preventDefault();
+            let searchVal = $(`#search-data`).val();
             var total_row_displayed = $(this).val();
             var page_number = $('#page_number').val();
             var total_pages = $('#total_pages').val();
@@ -325,7 +335,7 @@
                 var page_number = 1;
                 $('#page_number').val(1);
             }
-            load_data(page_number, total_row_displayed);
+            load_data(page_number, total_row_displayed, searchVal);
         });
 
         function search(){
@@ -337,9 +347,72 @@
 
         $('#search-data').keydown(function(e) {
             if(e.keyCode == 13) {
+                $('#page_number').val(1);
                 search();
             }
         });
+
+        $('#search-data').keyup(function(e) {
+            let val = $(this).val();
+            let page = $('#page_number').val();
+            let row = $('#row_per_page').val();
+            if(val == '') {
+                load_data(page, row);
+            }
+        });
+
+        //export Data
+        exportData = (ext) => {
+            let array_ids = [];
+            $('input.data-checkbox:checked').each(function() {
+                let ids = $(this).attr('id');
+                array_ids.push(ids);
+            });
+
+            let filePath = dialog.showSaveDialogSync({
+                title: 'Export Data',
+                defaultPath: 'exported-data',
+                buttonLabel: 'Export',
+                filters: [
+                    { name: ext , extensions: [ext] }
+                ]
+            });
+
+            if (filePath != undefined) {
+                if(array_ids.length < 1) {
+                    executeExport(filePath, ext);
+                } else {
+                    let join_ids = array_ids.join(',');
+                    executeExport(filePath, ext, join_ids);
+                }
+            } else {
+                dialog.showMessageBoxSync({
+                type: 'info',
+                title: 'Error',
+                message: 'Something went wrong, please try again.',
+                });
+            }
+        }
+
+        executeExport = (filePath, ext, joinIds = false) => {
+            switch(ext) {
+                case 'csv':
+                    exportCsv(filePath, ext, joinIds);
+                    break;
+                case 'pdf':
+                    exportPdf(filePath, ext, joinIds);
+                    break;
+            }
+        }
+
+        exportCsv = (filePath, ext, joinIds = false) => {
+            let doc_id = $('body').attr('id');
+            switch(doc_id) {
+                case 'product-data':
+                    exportCsvPrdData(filePath, ext, joinIds);
+                    break;
+            }
+        }
     </script>
 </body>
 

@@ -1,7 +1,10 @@
-const { app, BrowserWindow, ipcMain, screen, webContents } = require("electron");
+const { app, BrowserWindow, ipcMain, screen, webContents, dialog } = require("electron");
 const path = require("path");
 const db = require("./config/database/db_config");
 const remote = require('@electron/remote/main');
+const fs = require("fs");
+const url = require("url");
+const md5 =require("md5");
 remote.initialize();
 
 let mainWindow;
@@ -117,6 +120,23 @@ ipcMain.on('update:success', (event, msgDocId) => {
 ipcMain.on('close:edit', () => {
   editDataModal.close();
 })
+
+//--------------------------------------------------------
+
+writeCsv = (path, content) => {
+  fs.writeFile(path, content, (err) => {
+    if (err) throw err;
+    dialog.showMessageBoxSync({
+      type: 'info',
+      title: 'Export CSV',
+      message: 'Export CSV Success',
+    });
+  });
+};
+
+ipcMain.on('write:csv', (e, msgPath, msgContent ) => {
+  writeCsv(msgPath, msgContent);
+});
 
 //--------------------------------------------------------
 

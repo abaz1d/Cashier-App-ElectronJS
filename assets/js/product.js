@@ -313,3 +313,25 @@ ipcRenderer.on('update:success', (e, msg) => {
     alertSuccess(msg)
     load_data();
 })
+
+exportCsvPrdData = (filePath, ext, joinIds = false) => {
+    let sql
+    let file_path = filePath.replace(/\\/g, "/")
+    if (joinIds) {
+        sql = `SELECT * FROM products WHERE id IN (${joinIds}) order by id asc`;
+    } else {
+        sql = `SELECT * FROM products order by id asc`;
+    }
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        convertToCSV = (arr) => {
+            let array = [Object.keys(arr[0])].concat(arr);
+            return array.map( (item) => {
+                return Object.values(item).toString();
+            }).join('\r\n');
+        }
+        let content = convertToCSV(result.rows);
+        ipcRenderer.send('write:csv', file_path, content)
+    })
+}
