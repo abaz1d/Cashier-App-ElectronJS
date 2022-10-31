@@ -47,8 +47,13 @@ let inputPrdQty = IMask(
 }
 );
 
-totalPrdPage = (total_row_displayed) => {
-    let sql = `SELECT COUNT(*) AS total FROM products`;
+totalPrdPage = (total_row_displayed, searchVal) => {
+    let sql;
+    if(searchVal != ''){
+        sql = `SELECT COUNT(*) AS total FROM products WHERE product_name ILIKE '%${searchVal}%' ESCAPE '!' OR product_code ILIKE '%${searchVal}%' ESCAPE '!' OR barcode ILIKE '%${searchVal}%' ESCAPE '!' OR category ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(selling_price AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(cost_of_product AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(product_intial_qty AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR unit ILIKE '%${searchVal}%' ESCAPE '!'`;
+    } else {
+        sql = `SELECT COUNT(*) AS total FROM products`;
+    }
     db.query(sql, (err, result) => {
         if (err) throw err
         let total_page
@@ -57,21 +62,26 @@ totalPrdPage = (total_row_displayed) => {
         }else{
             total_page = parseInt(result.rows[0].total / total_row_displayed) + 1;
         }
-        $('#total_page').val(total_page);
-        console.log('result',result.rows[0].total);
+        $('#total_pages').val(total_page);
     });
 }
 
-loadProduct = (page_number, total_row_displayed) => {
+loadProduct = (page_number, total_row_displayed, searchVal) => {
     let row_number;
     if(page_number < 2){
         row_number = 0;
     }else{
         row_number = (page_number - 1) * total_row_displayed;
     }
-    total_page(total_row_displayed);
-    let sql = "SELECT * FROM products ORDER BY id ASC LIMIT $1 OFFSET $2";
-    db.query(sql, [total_row_displayed, row_number], (err, data) => {
+    total_page(total_row_displayed, searchVal);
+
+    let sql;
+    if(searchVal != ''){
+        sql = `SELECT * FROM products WHERE product_name ILIKE '%${searchVal}%' ESCAPE '!' OR product_code ILIKE '%${searchVal}%' ESCAPE '!' OR barcode ILIKE '%${searchVal}%' ESCAPE '!' OR category ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(selling_price AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(cost_of_product AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR CAST(product_intial_qty AS TEXT) ILIKE '%${searchVal}%' ESCAPE '!' OR unit ILIKE '%${searchVal}%' ESCAPE '!' ORDER BY product_name ASC LIMIT ${total_row_displayed} OFFSET ${row_number}`;
+    } else {
+        sql = `SELECT * FROM products ORDER BY id DESC LIMIT ${total_row_displayed} OFFSET ${row_number}`;
+    }
+    db.query(sql, (err, data) => {
         if (err) throw err;
         let tr = '';
         if (data.length < 1) {

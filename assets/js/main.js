@@ -1,24 +1,25 @@
 let doc_id = $('body').attr('id');
 
 //total page
-total_page = (total_row_displayed) => {
+total_page = (total_row_displayed, searchVal = '') => {
     switch (doc_id) {
         case 'product-data':
-            totalPrdPage(total_row_displayed);
+            totalPrdPage(total_row_displayed, searchVal);
             break;
     }
 }
 
-load_data = (page_number, total_row_displayed) => {
+load_data = (page_number, total_row_displayed, searchVal = '') => {
     switch (doc_id) {
         case 'product-data':
-            loadProduct(page_number, total_row_displayed);
+            loadProduct(page_number, total_row_displayed, searchVal);
             break;
     }
 }
 let page_number = $('#page_number').val();
 let total_row_displayed = $('#row_per_page').val();
-load_data(page_number, total_row_displayed);
+let searchVal = $('#search-data').val();
+load_data(page_number, total_row_displayed, searchVal);
 
 deleteRecord = (id) => {
     let doc_id = $('body').attr('id');
