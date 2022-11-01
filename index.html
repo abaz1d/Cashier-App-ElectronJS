@@ -82,7 +82,7 @@
         <div class="d-flex justify-content-center mb-2">
             <div class="col-md-3 me-2">
                 <div class="box-menu">
-                    <a href="#" class="menu-link">
+                    <a href="#" class="menu-link" onclick="cashier()">
                         <img src="./assets/images/icons/cash-machine.png" alt="Chasier" />
                     </a>
                     <div class="box-menu-title">Kasir</div>
@@ -141,9 +141,14 @@
     <script>if (window.module) module = window.module;</script>
 
     <script>
-        const ipc = require('electron').ipcRenderer;
+        const electron = require('electron');
+        const { ipcRenderer } = electron;
         function productWindow() {
-            ipc.send('load:product-window');
+            ipcRenderer.send('load:product-window');
+        }
+
+        function cashier() {
+            ipcRenderer.send('load:cashier-window');
         }
     </script>
 </body>

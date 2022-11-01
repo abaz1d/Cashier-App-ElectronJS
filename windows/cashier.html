@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+
+<body style="background-color: #F0F3F4;">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div style="display: inline-block; color: aliceblue;">
+                <img src="" alt="" class="mr-1" id="store-logo" style="width: 30px; height: 30px;">
+                <span id="store-name" class="ms-2" style="font-size: 14.5px;"></span>
+            </div>
+            <div style="display: inline-block;">
+                <div class="dropdown" style="display: inline;">
+                    <a href="#" class="btn btn-primary" id="userInfoDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="userFirstName">User</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-light" style="width: 200px;"
+                        aria-labelledby="userInfoDropdown">
+                        <div class="dropdown-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 14px;">Acces Level</th>
+                                        <th style="font-size: 14px;">Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="userAccesLevel"></td>
+                                        <td id="userPosition"></td>
+                                    </tr>
+                            </table>
+                            <button class="btn btn-danger" id="logoutBtn"><i class="fa-solid fa-sign-out"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div style="padding: 70px 0px 10px 0px;">
+        <div class="row small-gutters">
+            <div class="col-md-8">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h6>
+                            <img src="" alt="" class="mr-sm-1">
+                            <button class="btn btn-sm btn-light btn-light-bordered" id="edit-qty" title="Edit Quantity"><i class="fa-solid fa-dolly"></i></button>
+                            <button class="btn btn-sm btn-light btn-light-bordered" id="discount-product" title="Potongan"><i class="fa-solid fa-tag"></i></button>
+                            <button class="btn btn-sm btn-light btn-light-bordered" id="discount-final" title="Potongan Fina;"><i class="fa-solid fa-tags"></i></button>
+                            <button class="btn btn-sm btn-light btn-light-bordered" id="btn-new-sales" title="Tambah Penjualan" autofocus><i class="fa-solid fa-plus"></i></button>
+                        </h6>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-inline">
+                            <div class="btn-group mb-2 mr-2">
+                                <input type="text" class="form-control form-control-sm sales-input" id="product_code" placeholder="Kode/Barcode Produk" disabled>
+                                <button class="btn btn-sm btn-primary sales-input" id="btn_add_sales" disabled><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <select class="form-control form-control-sm mb-2 mr-sm-2 sales-input" id="product_name" disabled></select>
+                        </div>
+                    </div>
+                    <div class="sales-record">
+                        <div class="table-responsive mt-2" style="height: 250px;">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Produk</th>
+                                        <th>Kode Produk</th>
+                                        <th><span class="float-right">Harga</span></th>
+                                        <th style="text-align: center;">Qty</th>
+                                        <th>Satuan</th>
+                                        <th>Potongan</th>
+                                        <th><span class="float-right">Total</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sales-data"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><span class="float-right">Potongan Final</span></td>
+                                    <td><span class="float-right" id="discount_final"></span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="float-right">PPN</span></td>
+                                    <td>
+                                        <span class="float-right" id="tax"></span>
+                                        <input type="hidden" class="float-right" id="input_tax">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="float-right"><b>Total</b></span></td>
+                                    <td><span class="float-right" id="total-and-tax" style="font-weight: bold;"></span></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer" style="margin-left: 0px; margin-right: 0px;">
+                        <button class="btn btn-sm btn-primary float-right mr-sm-2 mb-2" id="btn-checkout"><i class="fa-solid fa-money-bill"></i> Checkout (F2)</button>
+                        <button class="btn button-sm btn-light btn-light-bordered" id="btn-close-cashier"><i class="fa-solid fa-times"></i> Close Kasir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box-common">
+                    <table class="table table-bordered" style="font-size: 14px; border: 1px solid #B3B6B7;">
+                        <tbody style="color: black;">
+                            <tr>
+                                <td><span class="badge text-bg-success"><i class="fa-solid fa-user"></i> Admin</span></td>
+                                <td>: <span id="info-sales-cashier"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge text-bg-warning"><i class="fa-solid fa-calendar"></i> Tanggal</span></td>
+                                <td>: <span id="info-sales-date"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge text-bg-secondary"><i class="fa-solid fa-file"></i> No. Invoice</span></td>
+                                <td>: <span id="info-sales-number"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge text-bg-primary"><i class="fa-solid fa-user"></i> Customer</span></td>
+                                <td>: <span id="info-buyer"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="divider" style="margin-top: 0px;"></div>
+                    <div class="box-info">
+                        <div class="box-info-body" style="background-color: #F8F9FA;">
+                            <div class="box-info-left"><i class="fa-solid fa-shopping-cart"></i></div>
+                            <div class="box-info-right float-right"><h3 id="info-total-sales"></h3></div>
+                        </div>
+                        <div class="box-info-title">Total Penjualan</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <script src="../assets/js/jquery-3.6.1.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/require.js"></script>
+    <script src="../assets/js/product.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+
+    <script>if (window.module) module = window.module;</script>
+</body>
+
+</html>

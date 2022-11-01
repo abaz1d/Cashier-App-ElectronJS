@@ -12,6 +12,8 @@ let productWindow;
 let editDataModal;
 let toPdf;
 let printPage;
+
+let cashierWindow;
 mainWin = () => {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -73,6 +75,7 @@ productWin = () => {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    title: 'My Cashier App | Data Product',
   });
   remote.enable(productWindow.webContents);
 
@@ -303,4 +306,36 @@ ipcMain.on('print:page', () => {
   printPage.on('close', () => {
     printPage = null;
   });
+});
+
+//--------------------------------------------------------
+
+cashierWin = () => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  cashierWindow = new BrowserWindow({
+    width: width,
+    height: height,
+    minHeight: 600,
+    minWidth: 800,
+    resizable: true,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+    title: 'My Cashier App | Cashier',
+  });
+
+  cashierWindow.loadFile(path.join(__dirname, "windows/cashier.html"));
+  cashierWindow.on("closed", () => {
+    cashierWindow = null;
+    mainWindow.show();
+  });
+};
+
+
+ipcMain.on('load:cashier-window', () => {
+  cashierWin();
+  mainWindow.hide();
 });
