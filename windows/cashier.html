@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
             <div style="display: inline-block; color: aliceblue;">
-                <img src="" alt="" class="mr-1" id="store-logo" style="width: 30px; height: 30px;">
+                <img src="../assets/images/icons/small-cash-machine.png" alt="" class="ms-1" id="store-logo" style="width: 30px; height: 30px;">
                 <span id="store-name" class="ms-2" style="font-size: 14.5px;"></span>
             </div>
             <div style="display: inline-block;">
@@ -55,20 +55,25 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h6>
-                            <img src="" alt="" class="mr-sm-1">
+                            <img src="" alt="" class="me-sm-1">
                             <button class="btn btn-sm btn-light btn-light-bordered" id="edit-qty" title="Edit Quantity"><i class="fa-solid fa-dolly"></i></button>
                             <button class="btn btn-sm btn-light btn-light-bordered" id="discount-product" title="Potongan"><i class="fa-solid fa-tag"></i></button>
                             <button class="btn btn-sm btn-light btn-light-bordered" id="discount-final" title="Potongan Fina;"><i class="fa-solid fa-tags"></i></button>
-                            <button class="btn btn-sm btn-light btn-light-bordered" id="btn-new-sales" title="Tambah Penjualan" autofocus><i class="fa-solid fa-plus"></i></button>
+                            <button class="btn btn-sm btn-light btn-light-bordered" id="btn-new-sales" data-bs-toggle="modal" data-bs-backdrop="false" data-bs-target="#modal-new-sales"
+                             title="Tambah Penjualan" autofocus><i class="fa-solid fa-plus"></i></button>
                         </h6>
                     </div>
                     <div class="box-body">
-                        <div class="form-inline">
-                            <div class="btn-group mb-2 mr-2">
-                                <input type="text" class="form-control form-control-sm sales-input" id="product_code" placeholder="Kode/Barcode Produk" disabled>
-                                <button class="btn btn-sm btn-primary sales-input" id="btn_add_sales" disabled><i class="fa-solid fa-plus"></i></button>
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <div class="btn-group mb-2">
+                                    <input type="text" class="form-control form-control-sm sales-input" id="product_code" placeholder="Kode/Barcode Produk" disabled>
+                                    <button class="btn btn-sm btn-primary sales-input" id="btn_add_sales" disabled><i class="fa-solid fa-plus"></i></button>
+                                </div>
                             </div>
-                            <select class="form-control form-control-sm mb-2 mr-sm-2 sales-input" id="product_name" disabled></select>
+                            <div class="col-auto">
+                                <select class="form-select form-select-sm mb-2 sales-input" id="product_name" disabled></select>
+                            </div>
                         </div>
                     </div>
                     <div class="sales-record">
@@ -78,11 +83,11 @@
                                     <tr>
                                         <th>Nama Produk</th>
                                         <th>Kode Produk</th>
-                                        <th><span class="float-right">Harga</span></th>
+                                        <th><span class="float-end">Harga</span></th>
                                         <th style="text-align: center;">Qty</th>
                                         <th>Satuan</th>
                                         <th>Potongan</th>
-                                        <th><span class="float-right">Total</span></th>
+                                        <th><span class="float-end">Total</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="sales-data"></tbody>
@@ -93,29 +98,29 @@
                         <table class="table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <td><span class="float-right">Potongan Final</span></td>
-                                    <td><span class="float-right" id="discount_final"></span></td>
+                                    <td><span class="float-end">Potongan Final</span></td>
+                                    <td><span class="float-end" id="discount_final"></span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="float-right">PPN</span></td>
+                                    <td><span class="float-end">PPN</span></td>
                                     <td>
-                                        <span class="float-right" id="tax"></span>
-                                        <input type="hidden" class="float-right" id="input_tax">
+                                        <span class="float-end" id="tax"></span>
+                                        <input type="hidden" class="float-end" id="input_tax">
                                     </td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="float-right"><b>Total</b></span></td>
-                                    <td><span class="float-right" id="total-and-tax" style="font-weight: bold;"></span></td>
+                                    <td><span class="float-end"><b>Total</b></span></td>
+                                    <td><span class="float-end" id="total-and-tax" style="font-weight: bold;"></span></td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="box-footer" style="margin-left: 0px; margin-right: 0px;">
-                        <button class="btn btn-sm btn-primary float-right mr-sm-2 mb-2" id="btn-checkout"><i class="fa-solid fa-money-bill"></i> Checkout (F2)</button>
-                        <button class="btn button-sm btn-light btn-light-bordered" id="btn-close-cashier"><i class="fa-solid fa-times"></i> Close Kasir</button>
+                        <button class="btn btn-sm btn-primary float-end" id="btn-checkout"><i class="fa-solid fa-right-from-bracket"></i> Checkout (F2)</button>
+                        <button class="btn button-sm btn-light btn-light-bordered p-1" id="btn-close-cashier" onclick="closeCashier()"><i class="fa-solid fa-times"></i> Close Kasir</button>
                     </div>
                 </div>
             </div>
@@ -145,11 +150,64 @@
                     <div class="box-info">
                         <div class="box-info-body" style="background-color: #F8F9FA;">
                             <div class="box-info-left"><i class="fa-solid fa-shopping-cart"></i></div>
-                            <div class="box-info-right float-right"><h3 id="info-total-sales"></h3></div>
+                            <div class="box-info-right float-end"><h3 id="info-total-sales"></h3></div>
                         </div>
                         <div class="box-info-title">Total Penjualan</div>
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade sales-modal" id="modal-new-sales" role="dialog" aria-labelledby="modal-new-sales" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content with-shadow">
+                <div class="modal-header bg-custom-dark">
+                    Penjualan Baru
+                    <a href="#" type="button" class="close" style="color: white;" data-dismiss="modal">
+                        <span aria-hidden="true"><i class="fa-solid fa-times"></i></span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <input type="text" class="form-control form-control-sm" placeholder="Nama Faktur" id="sales-number">
+                    </div>
+                    <div class="mb-2">
+                        <select class="form-select form-select-sm" name="" id="buyer-select" data-table="buyers"></select>
+                        <input type="hidden" id="buyer-id">
+                        <small class="form-text text-muted" id="buyerHelp">
+                            <a href="#" id="open-modal-buyer" data-bs-toggle="modal" data-bs-backdrop="false">Klik Di sini</a> untuk menambahkan data customer baru
+                        </small>
+                </div>
+                <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Alamat Customer / Buyer" id="buyer-address">
+                </div>
+                <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Nomor PO" id="po-number">
+                </div>
+                <div class="mb-2">
+                    <select class="form-select form-select-sm" id="cash-credit">
+                        <option value="cash">Cash</option>
+                        <option value="credit">Credit</option>
+                    </select>
+                </div>
+                <div class="mb-2" id="due-date-form-group">
+                    <label for="due-date">Jatuh Tempo</label>
+                    <input type="text" class="form-control form-control-sm" id="due-date" placeholder="Format Tanggal : YYYY-MM-DD">
+                </div>
+                <div class="mb-2" id="term-form-group">
+                    <input type="text" class="form-control form-control-sm" id="term" style="display: none;">
+                </div>
+                <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Keterangan" id="description">
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input sales-tax" id="sales-tax">
+                    <label class="custom-control-label" for="sales-tax" style="font-size: 13px; color:black;">Beri PPN</label>
+                </div>
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-create-new-sales" autofocus><i class="fa-solid fa-check"></i> Buat Penjualan</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-times"></i> Tutup</button>
                 </div>
             </div>
         </div>
@@ -161,7 +219,7 @@
     <script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/require.js"></script>
-    <script src="../assets/js/product.js"></script>
+    <script src="../assets/js/cashier.js"></script>
     <script src="../assets/js/main.js"></script>
 
 

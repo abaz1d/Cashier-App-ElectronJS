@@ -326,8 +326,15 @@ cashierWin = () => {
     },
     title: 'My Cashier App | Cashier',
   });
+  remote.enable(cashierWindow.webContents);
 
   cashierWindow.loadFile(path.join(__dirname, "windows/cashier.html"));
+
+  cashierWindow.webContents.on('did-finish-load', () => {
+    mainWindow.hide();
+  });
+
+
   cashierWindow.on("closed", () => {
     cashierWindow = null;
     mainWindow.show();
@@ -337,5 +344,8 @@ cashierWin = () => {
 
 ipcMain.on('load:cashier-window', () => {
   cashierWin();
-  mainWindow.hide();
+});
+
+ipcMain.on('close:cashier-window', () => {
+  cashierWindow.close();
 });

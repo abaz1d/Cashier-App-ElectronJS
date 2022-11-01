@@ -87,3 +87,131 @@ tbody#data:hover{
     background-color: #ECF0F1;
     
 }
+
+.small-gutters {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.small-gutters > .col,
+.small-gutters > [class*=col-] {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.box, .box-common {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    z-index: 996;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 17px;
+    border: 1px solid #D0d3d4;
+}
+
+.box.box-border {
+    border: 0px;
+}
+
+.box-header::before,
+.box-body::before,
+.box-footer::before,
+.box-header::after,
+.box-body::after,
+.box-footer::after {
+    content: " ";
+    display: table;
+}
+
+.box-header::after,
+.box-body::after,
+.box-footer::after {
+    clear: both;
+}
+.box-header {
+    font-size: 24px;
+    color: #7B7D7D;
+    padding: 15px 15px 15px;
+}
+
+.box-header.no-padding {
+    padding: 0px 0px 5px;
+}
+
+.box-header > h2 {
+    font-size: 20px;
+}
+
+.box-header.with-border {
+    border-bottom: 5px solid #C7CBCC;
+}
+
+.box-body {
+    color: #7B7D7D;
+    margin: 15px;
+    font-size: 14px;
+}
+
+.box-body.no-margin {
+    margin: 15px 0px 0px 0px;
+}
+
+.box-footer {
+    border-top: 5px solid #ECF0F1;
+    color: #7B7D7D;
+    padding: 15px 15px 15px;
+}
+
+.box-common {
+    padding: 15px 15px;
+}
+
+.box-info {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    background-color: #ECF0F1;
+}
+
+.box-info-body {
+    padding: 15px 15px;
+    border-left: 1px solid #B3B6B7;
+    border-right: 1px solid #B3B6B7;
+    border-top: 1px solid #B3B6B7;
+    border-top-right-radius: 5px;
+}
+
+.box-info-right {
+    display: inline;
+}
+
+.box-info-right > h3 {
+    font-weight: bold;
+}
+
+.box-info-left {
+    display: inline;
+    font-size: 30px;
+}
+
+.box-info-title {
+    background-color: rgb(233, 77, 77);
+    color: #ECF0F1;
+    padding: 2px 2px 4px 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 14px;
+}
+
+.box-info-title.no-bg-color {
+    background-color: #ECF0F1;
+    color: black;
+    font-size: 15px;
+    border-left: 1px solid #B3B6B7;
+    border-right: 1px solid #B3B6B7;
+    border-top: 1px solid #B3B6B7;
+    border-bottom: 1px solid #B3B6B7;
+}
