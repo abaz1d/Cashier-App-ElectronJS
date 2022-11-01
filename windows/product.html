@@ -61,7 +61,7 @@
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="deleteAction()" id='delete-multiple-data' data-bs-toggle="tooltip" title="Hapus Data"><i class="fa-solid fa-trash"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" title="Export CSV" onclick="exportData('csv')" ><i class="fa-solid fa-file-excel"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" title="Export PDF" onclick="exportData('pdf')" ><i class="fa-solid fa-file-pdf"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered" title="Print Table" ><i class="fa-solid fa-print"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" title="Print Table" onclick="printData()" ><i class="fa-solid fa-print"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="selectAll()" id="select-all" title="Select All"><i class="fa-solid fa-check"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="unSelectAll()" id="unselect-all" title="Unselect All"><i class="fa-solid fa-times"></i></button>
                             </div>
@@ -377,10 +377,9 @@
             let filePath = dialog.showSaveDialogSync({
                 title: 'Export Data',
                 defaultPath: 'exported-data',
-                buttonLabel: 'Export',
                 filters: [
                     { name: ext , extensions: [ext] }
-                ]
+                ],
             });
 
             if (filePath != undefined) {
@@ -424,6 +423,35 @@
             switch(doc_id) {
                 case 'product-data':
                     exportPdfPrdData(filePath, ext, joinIds);
+                    break;
+            }
+        }
+
+        printData = () => {
+            let array_ids = [];
+            $('input.data-checkbox:checked').each(function() {
+                let ids = $(this).attr('id');
+                array_ids.push(ids);
+            });
+
+            if(array_ids.length < 1) {
+                executePrintData();
+                // dialog.showMessageBoxSync({
+                //     type: 'info',
+                //     title: 'Error',
+                //     message: 'Please select at least one data to print.',
+                // });
+            } else {
+                let join_ids = array_ids.join(',');
+                executePrintData(join_ids);
+            }
+        }
+
+        executePrintData = (joinIds = false) => {
+            let doc_id = $('body').attr('id');
+            switch(doc_id) {
+                case 'product-data':
+                    printPrdData(joinIds);
                     break;
             }
         }

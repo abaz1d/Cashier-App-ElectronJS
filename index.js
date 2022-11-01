@@ -11,6 +11,7 @@ let mainWindow;
 let productWindow;
 let editDataModal;
 let toPdf;
+let printPage;
 mainWin = () => {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -197,42 +198,109 @@ loadToPdf = (param1, param2, file_path, docId = false, title) => {
   });
   
   switch (docId) {
-    case 'sales-export':
-      toPdf.loadFile(`export-pdf/sales-record-pdf.html`);
+    case 'sales-report':
+      toPdf.loadFile(path.join(__dirname, "export-pdf/sales-record-pdf.html"));
       break;
     default:
-      toPdf.loadFile(`export-pdf/toPdf.html`);
+      toPdf.loadFile(path.join(__dirname, "export-pdf/toPdf.html"));
       break;
   }
 
   toPdf.webContents.on("dom-ready", () => {
-    toPdf.webContents.send("load:table-to-pdf", param1, param2, titleObject);
+    toPdf.webContents.send("load:table-to-pdf", param1, param2, titleObject, file_path);
   });
-
-  toPdf.webContents.on("did-finish-load", () => {
-    toPdf.webContents.printToPDF({
-      marginsType: 0,
-      printBackground: true,
-      printSelectionOnly: false,
-      landscape: true
-    }).then((data) => {
-      fs.writeFile(file_path, data, (error) => {
-        if (error) throw error;
-        toPdf.close();
-        dialog.showMessageBoxSync({
-          type: "info",
-          title: "Alert",
-          message: "Export PDF Success",
-        });
-      });
-    }).catch((err) => {
-      console.log('error', err)
-    })
-  });
-
 };
 
 ipcMain.on('load:to-pdf', (e, msgThead, msgTbody, msgFilePath, msgDocId, msgTitle) => {
   loadToPdf(msgThead, msgTbody, msgFilePath, msgDocId, msgTitle);
 
+});
+
+ipcMain.on('create:pdf', (e, file_path) => {
+  toPdf.webContents.printToPDF({
+    landscape: true,
+    marginsType: 0,
+    printBackground: true,
+    printSelectionOnly: false,
+  }).then((data) => {
+    fs.writeFile(file_path, data, (error) => {
+      if (error) throw error;
+      toPdf.close();
+      dialog.showMessageBoxSync({
+        type: "info",
+        title: "Alert",
+        message: "Export PDF Success",
+      });
+    });
+  }).catch((err) => {
+    console.log('error', err)
+  })
+});
+
+//--------------------------------------------------------
+
+loadPrintPage = (param1, param2, docId = false, title) => {
+  printPage = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+
+  let d = new Date();
+  let day = d.getDate().toString().padStart(2, 0);
+  let month = (d.getMonth() + 1).toString().padStart(2, 0);
+  let year = d.getFullYear();
+  let today = `${day}/${month}/${year}`;
+
+  titleObject = {
+    title: title,
+    date: today,
+  }
+
+  db.query(`SELECT * FROM profile ORDER BY id ASC LIMIT 1`, (err, res) => {
+    if (err) throw err;
+    if (res.rows.length < 1) {
+        titleObject.storeName = 'My Store';
+        titleObject.storeAddress = 'Address';
+        titleObject.storeLogo = 'shop.png';
+    } else {
+        titleObject.storeName = res.rows[0].store_name;
+        titleObject.storeAddress = res.rows[0].store_address;
+        if (res.rows[0].store_logo == null || res.rows[0].store_logo == '') {
+          titleObject.storeLogo = 'shop.png';
+        } else {
+          titleObject.storeLogo = res.rows[0].logo;
+        }
+    }
+  });
+  
+  switch (docId) {
+    case 'sales-report':
+      printPage.loadFile(path.join(__dirname, "export-pdf/sales-record-pdf.html"));
+      break;
+    default:
+      printPage.loadFile(path.join(__dirname, "print-page.html"));
+      break;
+  }
+
+  printPage.webContents.on("dom-ready", () => {
+    printPage.webContents.send("load:table-to-print", param1, param2, titleObject);
+  });
+};
+
+ipcMain.on('load:print-page', (e, msgThead, msgTbody, msgDocId, msgTitle) => {
+  loadPrintPage(msgThead, msgTbody, msgDocId, msgTitle);
+});
+
+ipcMain.on('print:page', () => {
+  printPage.webContents.print({
+    printBackground: true,
+  }, (success, errorType) => {
+    if (!success) console.log("Print Error =>",errorType);
+    printPage.close();
+  })
+  printPage.on('close', () => {
+    printPage = null;
+  });
 });
