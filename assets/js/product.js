@@ -335,3 +335,83 @@ exportCsvPrdData = (filePath, ext, joinIds = false) => {
         ipcRenderer.send('write:csv', file_path, content)
     })
 }
+
+exportPdfPrdData = (filePath, ext, joinIds = false) => {
+    let sql
+    let file_path = filePath.replace(/\\/g, "/")
+    if (joinIds) {
+        sql = `SELECT * FROM products WHERE id IN (${joinIds}) order by id asc`;
+        db.query(sql, (err, result) => {
+            if(err) throw err;
+            let tbody = '';
+            let thead = `<tr>
+                            <th style="width: 5%;">Id</th>
+                            <th style="width: 30%;">Nama Produk</th>
+                            <th style="width: 30%;">Kode Produk</th>
+                            <th style="width: 15%;">Barcode</th>
+                            <th style="width: 15%;">Category</th>
+                            <th style="width: 15%;">Harga Jual</th>
+                            <th style="width: 15%;">Harga Pokok</th>
+                            <th style="width: 15%;">Unit</th>
+                            <th style="width: 15%;">Stok Awal</th>
+                        </tr>`;
+            result.rows.forEach((row, index) => {
+                tbody += `<tr>
+                            <td>${row.id}</td>
+                            <td>${row.product_name}</td>
+                            <td>${row.product_code}</td>
+                            <td>${row.barcode}</td>
+                            <td>${row.category}</td>
+                            <td>${row.selling_price}</td>
+                            <td>${row.cost_of_product}</td>
+                            <td>${row.unit}</td>
+                            <td>${row.product_intial_qty}</td>
+                        </tr>`;
+            });
+            ipcRenderer.send('load:to-pdf', thead, tbody, file_path, 'product-data', 'Data Produk')
+        });
+    } else {
+        sql = `SELECT * FROM products order by id asc`;
+        db.query(sql, (err, result) => {
+            if(err) throw err;
+            let tbody = '';
+            let thead = `<tr>
+                            <th style="width: 5%;">Id</th>
+                            <th style="width: 30%;">Nama Produk</th>
+                            <th style="width: 30%;">Kode Produk</th>
+                            <th style="width: 15%;">Barcode</th>
+                            <th style="width: 15%;">Category</th>
+                            <th style="width: 15%;">Harga Jual</th>
+                            <th style="width: 15%;">Harga Pokok</th>
+                            <th style="width: 15%;">Unit</th>
+                            <th style="width: 15%;">Stok Awal</th>
+                        </tr>`;
+            result.rows.forEach((row, index) => {
+                tbody += `<tr>
+                            <td>${row.id}</td>
+                            <td>${row.product_name}</td>
+                            <td>${row.product_code}</td>
+                            <td>${row.barcode}</td>
+                            <td>${row.category}</td>
+                            <td>${row.selling_price}</td>
+                            <td>${row.cost_of_product}</td>
+                            <td>${row.unit}</td>
+                            <td>${row.product_intial_qty}</td>
+                        </tr>`;
+            });
+            ipcRenderer.send('load:to-pdf', thead, tbody, file_path, 'product-data', 'Data Produk')
+        });
+    }
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        convertToCSV = (arr) => {
+            let array = [Object.keys(arr[0])].concat(arr);
+            return array.map( (item) => {
+                return Object.values(item).toString();
+            }).join('\r\n');
+        }
+        let content = convertToCSV(result.rows);
+        ipcRenderer.send('write:csv', file_path, content)
+    })
+}

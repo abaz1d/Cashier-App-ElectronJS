@@ -352,6 +352,11 @@
             }
         });
 
+        $('#search-btn').click(function(e) {
+            $('#page_number').val(1);
+            search();
+        });
+
         $('#search-data').keyup(function(e) {
             let val = $(this).val();
             let page = $('#page_number').val();
@@ -410,6 +415,15 @@
             switch(doc_id) {
                 case 'product-data':
                     exportCsvPrdData(filePath, ext, joinIds);
+                    break;
+            }
+        }
+
+        exportPdf = (filePath, ext, joinIds = false) => {
+            let doc_id = $('body').attr('id');
+            switch(doc_id) {
+                case 'product-data':
+                    exportPdfPrdData(filePath, ext, joinIds);
                     break;
             }
         }
