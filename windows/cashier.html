@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/jquery/jquery-ui-1.9.2.custom/css/base/jquery-ui-1.9.2.custom.min.css">
 </head>
 
 <body style="background-color: #F0F3F4;">
@@ -72,7 +73,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <select class="form-select form-select-sm mb-2 sales-input" id="product_name" disabled></select>
+                                <select class="form-select form-select-sm mb-2 sales-input" id="product_name" onchange="getCodeByName()" disabled></select>
                             </div>
                         </div>
                     </div>
@@ -206,7 +207,7 @@
                     <label class="custom-control-label" for="sales-tax" style="font-size: 13px; color:black;">Beri PPN</label>
                 </div>
                 <div class="modal-footer"> 
-                    <button type="button" class="btn btn-sm btn-primary" id="btn-create-new-sales" autofocus><i class="fa-solid fa-check"></i> Buat Penjualan</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-create-new-sales" onclick="openSales()" autofocus><i class="fa-solid fa-check"></i> Buat Penjualan</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-times"></i> Tutup</button>
                 </div>
             </div>
@@ -216,8 +217,10 @@
 
     <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
 
-    <script src="../assets/js/jquery-3.6.1.min.js"></script>
+    <script src="../assets/jquery/jquery-3.6.1.min.js"></script>
+    <script src="../assets/jquery/jquery-migrate-3.4.0.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/jquery/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script src="../assets/js/require.js"></script>
     <script src="../assets/js/cashier.js"></script>
     <script src="../assets/js/main.js"></script>
