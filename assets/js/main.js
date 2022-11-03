@@ -91,3 +91,8 @@ alertSuccess = (msg) => {
     }
     setTimeout(clearAlert, 4000);
 }
+
+numberFormatter = (num) => {
+    let numFormat = new Intl.NumberFormat('de-DE').format(num);
+    return numFormat;
+}
