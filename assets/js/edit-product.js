@@ -6,7 +6,6 @@ submitEditPrdData = (rowId) => {
     let prevPrdBarcode = $('#edit-form').find('#prevPrdBarcode').val();
     let prdPrice = $('#edit-form').find('#editPrdPrice').val();
 
-    // console.log('data', prdName, prevPrdName, prdBarcode, prevPrdBarcode, prdPrice)
 
     if (prdName == '' || prdPrice == '') {
         dialog.showMessageBoxSync({

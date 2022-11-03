@@ -87,7 +87,6 @@ productWin = () => {
 
   productWindow.on("closed", () => {
     mainWindow.show();
-    // console.log('productWindow', productWindow);
   });
 }
 
