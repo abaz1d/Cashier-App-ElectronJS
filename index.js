@@ -21,6 +21,7 @@ mainWin = () => {
     minHeight: 600,
     minWidth: 800,
     alwaysOnTop: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,

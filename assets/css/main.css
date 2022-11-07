@@ -7,7 +7,7 @@
     display: block;
 }
 
-.box-menu > a.menu-link {
+.box-menu>a.menu-link {
     display: block;
     color: #fff;
     text-decoration: none;
@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-.box-menu > a.menu-link:hover {
+.box-menu>a.menu-link:hover {
     background-color: #0d6efd;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -79,13 +79,13 @@
     margin: 3px;
 }
 
-tbody#data:hover{
-   cursor: pointer;
+tbody#data:hover {
+    cursor: pointer;
 }
 
 .blocked {
     background-color: #ECF0F1;
-    
+
 }
 
 .small-gutters {
@@ -93,13 +93,14 @@ tbody#data:hover{
     margin-right: 10px;
 }
 
-.small-gutters > .col,
-.small-gutters > [class*=col-] {
+.small-gutters>.col,
+.small-gutters>[class*=col-] {
     padding-right: 10px;
     padding-left: 10px;
 }
 
-.box, .box-common {
+.box,
+.box-common {
     position: relative;
     width: 100%;
     height: auto;
@@ -130,6 +131,7 @@ tbody#data:hover{
 .box-footer::after {
     clear: both;
 }
+
 .box-header {
     font-size: 24px;
     color: #7B7D7D;
@@ -140,7 +142,7 @@ tbody#data:hover{
     padding: 0px 0px 5px;
 }
 
-.box-header > h2 {
+.box-header>h2 {
     font-size: 20px;
 }
 
@@ -188,7 +190,7 @@ tbody#data:hover{
     display: inline;
 }
 
-.box-info-right > h3 {
+.box-info-right>h3 {
     font-weight: bold;
 }
 
@@ -215,3 +217,46 @@ tbody#data:hover{
     border-top: 1px solid #B3B6B7;
     border-bottom: 1px solid #B3B6B7;
 }
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .dropdown-menu .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -7px;
+    }
+
+    .dropdown-menu .submenu-left {
+        right: 100%;
+        left: auto;
+    }
+
+    .dropdown-menu>li:hover {
+        background-color: #f1f1f1
+    }
+
+    .dropdown-menu>li:hover>.submenu {
+        display: block;
+    }
+}
+
+/* ============ desktop view .end// ============ */
+
+/* ============ small devices ============ */
+@media (max-width: 991px) {
+
+    .dropdown-menu .dropdown-menu {
+        margin-left: 0.7rem;
+        margin-right: 0.7rem;
+        margin-bottom: .5rem;
+    }
+
+}
+
+/* ============ small devices .end// ============ */
